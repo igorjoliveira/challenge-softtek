@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Softtek.Domain\Softtek.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Database\" />
+  </ItemGroup>
+
 </Project>
