@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Softtek.Data.Context;
 
@@ -10,54 +11,14 @@ using Softtek.Data.Context;
 namespace Softtek.Data.Migrations
 {
     [DbContext(typeof(SofttekDbContext))]
-    partial class SofttekDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250520014204_CriarContextoAvaliacaoPsicossocial")]
+    partial class CriarContextoAvaliacaoPsicossocial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
-
-            modelBuilder.Entity("Softtek.Domain.Aggregates.AssistenciaEmocional.ApoioBase", b =>
-                {
-                    b.Property<string>("Codigo")
-                        .HasMaxLength(26)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ApoioAggregateId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Descricao")
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Codigo");
-
-                    b.HasIndex("ApoioAggregateId");
-
-                    b.ToTable("Apoios", (string)null);
-
-                    b.UseTptMappingStrategy();
-                });
-
-            modelBuilder.Entity("Softtek.Domain.Aggregates.AssistenciaEmocional.AssistenciaAggregate", b =>
-                {
-                    b.Property<string>("Codigo")
-                        .HasMaxLength(26)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Codigo");
-
-                    b.ToTable("Assistencia", (string)null);
-                });
 
             modelBuilder.Entity("Softtek.Domain.Aggregates.AvaliacaoPsicossocial.AvaliacaoAggregate", b =>
                 {
@@ -192,49 +153,6 @@ namespace Softtek.Data.Migrations
                     b.ToTable("Perguntas");
                 });
 
-            modelBuilder.Entity("Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos.Lembrete", b =>
-                {
-                    b.HasBaseType("Softtek.Domain.Aggregates.AssistenciaEmocional.ApoioBase");
-
-                    b.Property<DateTime>("DataAgendada")
-                        .HasColumnType("TEXT");
-
-                    b.ToTable("Lembretes", (string)null);
-                });
-
-            modelBuilder.Entity("Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos.Notificacao", b =>
-                {
-                    b.HasBaseType("Softtek.Domain.Aggregates.AssistenciaEmocional.ApoioBase");
-
-                    b.Property<string>("NivelGravidade")
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Urgente")
-                        .HasColumnType("INTEGER");
-
-                    b.ToTable("Notificacoes", (string)null);
-                });
-
-            modelBuilder.Entity("Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos.RecursoDeApoio", b =>
-                {
-                    b.HasBaseType("Softtek.Domain.Aggregates.AssistenciaEmocional.ApoioBase");
-
-                    b.Property<string>("Categoria")
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Tipo")
-                        .HasColumnType("INTEGER");
-
-                    b.ToTable("RecursosDeApoio", (string)null);
-                });
-
             modelBuilder.Entity("Softtek.Domain.Aggregates.AvaliacaoPsicossocial.Escala.Tipos.EmocaoEscala", b =>
                 {
                     b.HasBaseType("Softtek.Domain.Aggregates.AvaliacaoPsicossocial.Escala.EscalaBase");
@@ -268,17 +186,6 @@ namespace Softtek.Data.Migrations
                     b.HasBaseType("Softtek.Domain.Aggregates.AvaliacaoPsicossocial.Escala.Tipos.EmocaoEscala");
 
                     b.HasDiscriminator().HasValue("Humor");
-                });
-
-            modelBuilder.Entity("Softtek.Domain.Aggregates.AssistenciaEmocional.ApoioBase", b =>
-                {
-                    b.HasOne("Softtek.Domain.Aggregates.AssistenciaEmocional.AssistenciaAggregate", "ApoioAggregate")
-                        .WithMany("Apoios")
-                        .HasForeignKey("ApoioAggregateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApoioAggregate");
                 });
 
             modelBuilder.Entity("Softtek.Domain.Aggregates.AvaliacaoPsicossocial.BlocoDePergunta", b =>
@@ -335,38 +242,6 @@ namespace Softtek.Data.Migrations
                     b.Navigation("Bloco");
 
                     b.Navigation("Escala");
-                });
-
-            modelBuilder.Entity("Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos.Lembrete", b =>
-                {
-                    b.HasOne("Softtek.Domain.Aggregates.AssistenciaEmocional.ApoioBase", null)
-                        .WithOne()
-                        .HasForeignKey("Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos.Lembrete", "Codigo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos.Notificacao", b =>
-                {
-                    b.HasOne("Softtek.Domain.Aggregates.AssistenciaEmocional.ApoioBase", null)
-                        .WithOne()
-                        .HasForeignKey("Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos.Notificacao", "Codigo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos.RecursoDeApoio", b =>
-                {
-                    b.HasOne("Softtek.Domain.Aggregates.AssistenciaEmocional.ApoioBase", null)
-                        .WithOne()
-                        .HasForeignKey("Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos.RecursoDeApoio", "Codigo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Softtek.Domain.Aggregates.AssistenciaEmocional.AssistenciaAggregate", b =>
-                {
-                    b.Navigation("Apoios");
                 });
 
             modelBuilder.Entity("Softtek.Domain.Aggregates.AvaliacaoPsicossocial.AvaliacaoAggregate", b =>
