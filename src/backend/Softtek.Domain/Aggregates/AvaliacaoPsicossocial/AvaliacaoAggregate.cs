@@ -24,4 +24,13 @@ public class AvaliacaoAggregate(DateOnly dataCriacao)
     {
         return _blocosDePergunta.Where(b => b.Frequencia == frequencia).ToList();
     }
+    public IEnumerable<BlocoDePergunta> ObterBlocosPendentes(DateOnly dataReferencia)
+    {
+        return _blocosDePergunta.Where(b => !b.Perguntas.Any() ||
+                                            b.Perguntas.All(p => p.Desativado == true));
+    }
+    public IEnumerable<BlocoDePergunta> ObterBlocosEmAtraso()
+    {
+        return _blocosDePergunta.Where(b => b.Frequencia == FrequenciaPreenchimento.Diario && b.Perguntas.All(p => p.Desativado == false));
+    }
 }

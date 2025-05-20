@@ -9,9 +9,9 @@ namespace Softtek.Domain.Aggregates.MonitoramentoEmocional
         public required Ulid Codigo { get; set; }
 
         public required Ulid EscalaValorCodigo { get; set; }
-        public required EscalaValor EscalaValor { get; set; }
+        public EscalaValor EscalaValor { get; set; } = null!;
 
         public required Ulid PerguntaCodigo { get; set; }
-        public required Pergunta Pergunta { get; set; }
+        public Pergunta Pergunta { get; set; } = null!;
     }
 }

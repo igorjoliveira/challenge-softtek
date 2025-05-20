@@ -5,6 +5,7 @@ using Softtek.Domain.Aggregates.AssistenciaEmocional;
 using Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos;
 using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
 using Softtek.Domain.Aggregates.AvaliacaoPsicossocial.Escala;
+using Softtek.Domain.Aggregates.MonitoramentoEmocional;
 
 namespace Softtek.Data.Context;
 
@@ -20,6 +21,8 @@ public class SofttekDbContext : DbContext
     public DbSet<Lembrete> Lembretes { get; set; } = null!;
     public DbSet<Notificacao> Notificacoes { get; set; } = null!;
     public DbSet<RecursoDeApoio> RecursosDeApoio { get; set; } = null!;
+    public DbSet<Questionario> Questionarios { get; set; } = null!;
+    public DbSet<Resposta> Respostas { get; set; } = null!;
 
     public SofttekDbContext(DbContextOptions<SofttekDbContext> options) : base(options) { }
 

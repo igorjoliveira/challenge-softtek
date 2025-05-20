@@ -18,7 +18,6 @@ public class RegistroAggregate
 
         return questionario.Codigo;
     }
-
     public Questionario ObterQuestionario(Ulid blocoCodigo)
     {
         var questionario = _questionarios
@@ -29,7 +28,6 @@ public class RegistroAggregate
 
         return questionario;
     }
-
     public DateOnly ObterDataUltimoPreenchimento(Ulid blocoCodigo)
     {
         var ultimoQuestionario = _questionarios
@@ -38,5 +36,16 @@ public class RegistroAggregate
             .FirstOrDefault();
 
         return ultimoQuestionario?.DataPreenchimento ?? DateOnly.MinValue;
+    }
+    public bool VerificarPreenchimentoCompleto(Ulid blocoCodigo)
+    {
+        var questionario = _questionarios.FirstOrDefault(q => q.BlocoDePerguntaCodigo == blocoCodigo);
+        return questionario?.Respostas.Count > 0;
+    }
+    public IEnumerable<Resposta> ObterRespostasPorData(DateOnly dataPreenchimento)
+    {
+        return _questionarios
+               .Where(q => q.DataPreenchimento == dataPreenchimento)
+               .SelectMany(q => q.Respostas);
     }
 }

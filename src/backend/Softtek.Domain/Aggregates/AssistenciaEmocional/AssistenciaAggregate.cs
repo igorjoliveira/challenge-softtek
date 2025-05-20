@@ -56,5 +56,18 @@ namespace Softtek.Domain.Aggregates.AssistenciaEmocional
                 AdicionarApoio(notificacao);
             }
         }
+        public IEnumerable<ApoioBase> ObterApoiosPorData(DateTime data)
+        {
+            return _apoios.Where(a => a.DataCriacao.Date == data.Date ||
+                                      (a is Lembrete l && l.DataAgendada.Date == data.Date));
+        }
+        public IEnumerable<RecursoDeApoio> ObterApoiosPorTipo(TipoRecurso tipo)
+        {
+            return _apoios.OfType<RecursoDeApoio>().Where(r => r.Tipo == tipo);
+        }
+        public IEnumerable<Notificacao> ObterNotificacoesUrgentes()
+        {
+            return _apoios.OfType<Notificacao>().Where(n => n.Urgente);
+        }
     }
 }
