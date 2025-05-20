@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Softtek.Data.Mappings;
+using Softtek.Data.Seed;
 using Softtek.Domain.Aggregates.AssistenciaEmocional;
 using Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos;
 using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
@@ -44,6 +45,6 @@ public class SofttekDbContext : DbContext
         modelBuilder.ApplyConfiguration(new RespostaMapping());
 
         // Seed Data
-        //AvaliacaoSeed.Seed(modelBuilder);
+        AvaliacaoSeed.Seed(modelBuilder);
     }
 }
