@@ -39,6 +39,9 @@ public class SofttekDbContext : DbContext
         modelBuilder.ApplyConfiguration(new NotificacaoMapping());
         modelBuilder.ApplyConfiguration(new RecursoDeApoioMapping());
 
+        //MonitoramentoEmocional
+        modelBuilder.ApplyConfiguration(new QuestionarioMapping());
+        modelBuilder.ApplyConfiguration(new RespostaMapping());
 
         // Seed Data
         //AvaliacaoSeed.Seed(modelBuilder);

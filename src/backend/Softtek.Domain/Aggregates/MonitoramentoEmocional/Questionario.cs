@@ -7,13 +7,21 @@ namespace Softtek.Domain.Aggregates.MonitoramentoEmocional
     {
         private readonly List<Resposta> _respostas = new();
 
-        public Ulid Codigo { get; set; }
-        public required DateOnly DataPreenchimento { get; set; }
+        public Ulid Codigo { get; private set; }
+        public DateOnly DataPreenchimento { get; private set; }
 
-        public required Ulid BlocoDePerguntaCodigo { get; set; }
-        public required BlocoDePergunta BlocoDePergunta { get; set; }
+        public Ulid BlocoDePerguntaCodigo { get; private set; }
+        public BlocoDePergunta BlocoDePergunta { get; private set; }
         
         public IReadOnlyCollection<Resposta> Respostas => _respostas.AsReadOnly();
+
+        private Questionario() { }
+        public Questionario(DateOnly dataPreenchimento, Ulid blocoDePerguntaCodigo)
+        {
+            Codigo = Ulid.NewUlid();
+            DataPreenchimento = dataPreenchimento;
+            BlocoDePerguntaCodigo = blocoDePerguntaCodigo;
+        }
 
         public void AdicionarResposta(Resposta resposta)
         {
