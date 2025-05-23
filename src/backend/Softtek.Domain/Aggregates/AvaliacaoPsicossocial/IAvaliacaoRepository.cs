@@ -1,7 +1,6 @@
 ﻿using NUlid;
-using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
 
-namespace Softtek.Domain.Repositories
+namespace Softtek.Domain.Aggregates.AvaliacaoPsicossocial
 {
     public interface IAvaliacaoRepository
     {

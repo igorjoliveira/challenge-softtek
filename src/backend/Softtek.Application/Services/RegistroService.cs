@@ -5,7 +5,6 @@ using Softtek.Application.Interfaces.Services;
 using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
 using Softtek.Domain.Aggregates.AvaliacaoPsicossocial.Commands;
 using Softtek.Domain.Exceptions;
-using Softtek.Domain.Repositories;
 
 namespace Softtek.Application.Services
 {
@@ -19,7 +18,6 @@ namespace Softtek.Application.Services
             _avaliacaoRepository = avaliacaoRepository;
             _mapper = mapper;
         }
-
         public async Task<Ulid> CriarAvaliacaoAsync(NovaAvaliacaoDto dto)
         {
             var avaliacao = new AvaliacaoAggregate(dto.DataCriacao);
@@ -28,7 +26,6 @@ namespace Softtek.Application.Services
 
             throw new Exception("Erro ao criar avaliação");
         }
-
         public async Task<Ulid> AdicionarBlocoAsync(Ulid avaliacaoCodigo, NovoBlocoDePerguntaDto dto)
         {
             var avaliacao = await _avaliacaoRepository.ObterAvaliacaoPorIdAsync(avaliacaoCodigo);
@@ -42,7 +39,6 @@ namespace Softtek.Application.Services
 
             throw new Exception("Erro ao adicionar bloco de perguntas");
         }
-
         public async Task<IList<Ulid>> AdicionarPerguntaAsync(Ulid avaliacaoCodigo, Ulid blocoCodigo, params NovaPerguntaDto[] dtos)
         {
             var avaliacao = await _avaliacaoRepository.ObterAvaliacaoPorIdAsync(avaliacaoCodigo);
@@ -65,13 +61,11 @@ namespace Softtek.Application.Services
 
             return result;
         }
-
         public async Task<IList<AvaliacaoDto>> ListarAvaliacoesAsync()
         {
             var avaliacoes = await _avaliacaoRepository.ListarAvaliacoesAsync();
             return _mapper.Map<List<AvaliacaoDto>>(avaliacoes);
         }
-
         public async Task<IList<BlocoDePerguntaDto>> ObterBlocosPorAvaliacaoAsync(Ulid avaliacaoCodigo)
         {
             var avaliacao = await _avaliacaoRepository.ObterAvaliacaoPorIdAsync(avaliacaoCodigo);
@@ -80,7 +74,6 @@ namespace Softtek.Application.Services
 
             return _mapper.Map<List<BlocoDePerguntaDto>>(avaliacao.BlocosDePergunta);
         }
-
         public async Task<IList<PerguntaDto>> ObterPerguntasPorBlocoAsync(Ulid avaliacaoCodigo, Ulid blocoCodigo)
         {
             var avaliacao = await _avaliacaoRepository.ObterAvaliacaoPorIdAsync(avaliacaoCodigo);

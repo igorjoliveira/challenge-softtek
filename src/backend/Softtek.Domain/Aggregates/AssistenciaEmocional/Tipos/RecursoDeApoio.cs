@@ -4,7 +4,7 @@ namespace Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos
 {
     public class RecursoDeApoio : ApoioBase
     {
-        public required string Link { get; set; }
+        public string Link { get; set; }
         public TipoRecurso Tipo { get; set; }
         public string? Categoria { get; set; }
 

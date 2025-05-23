@@ -2,7 +2,7 @@
 
 namespace Softtek.Application.DTOs
 {
-    public record PerguntaDto
+    public class PerguntaDto
     {
         public Ulid Codigo { get; set; }
         public string Descricao { get; set; }
