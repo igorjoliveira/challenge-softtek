@@ -1,7 +1,4 @@
 ﻿namespace Softtek.Application.DTOs
 {
-    public record FrequenciaDto(
-        int Valor,
-        string Unidade
-    );
+    public record FrequenciaDto(int Codigo, string Descricao);
 }

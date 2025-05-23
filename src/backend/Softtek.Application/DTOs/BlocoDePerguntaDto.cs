@@ -1,15 +1,15 @@
 ﻿using NUlid;
 using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
-using Softtek.Domain.Aggregates.AvaliacaoPsicossocial.Commands;
 
 namespace Softtek.Application.DTOs
 {
-    public record BlocoDePerguntaDto(
-        Ulid Codigo,
-        string Titulo,
-        FrequenciaDto Frequencia,
-        List<PerguntaDto> Perguntas
-    );
+    public record BlocoDePerguntaDto
+    {
+        public Ulid Codigo { get; set; }
+        public string Titulo {get; set;}
+        public FrequenciaDto Frequencia {get; set;}
+        public List<PerguntaDto> Perguntas {get; set;}
+    }
 
     public record NovoBlocoDePerguntaDto(
         string titulo, 

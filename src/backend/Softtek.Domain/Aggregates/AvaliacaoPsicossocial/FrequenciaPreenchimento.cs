@@ -1,11 +1,11 @@
 ﻿namespace Softtek.Domain.Aggregates.AvaliacaoPsicossocial
 {
-    public enum FrequenciaPreenchimento
+    public enum FrequenciaPreenchimento : int
     {
-        Diario,
-        Semanal,
-        Mensal,
-        Semestral,
-        Anual
+        Diario = 1,
+        Semanal = 2,
+        Mensal = 3,
+        Semestral = 4,
+        Anual = 5,
     }
 }

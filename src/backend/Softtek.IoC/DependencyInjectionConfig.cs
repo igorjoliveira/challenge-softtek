@@ -18,12 +18,15 @@ namespace Softtek.IoC.DependencyInjection
             services.AddDbContext<SofttekDbContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("SofttekDb")));
 
+            services.AddAutoMapper(typeof(EscalaMappingProfile));
+            services.AddAutoMapper(typeof(RegistroMappingProfile));
             services.AddAutoMapper(typeof(AvaliacaoMappingProfile));
 
+            services.AddScoped<IRegistroService, RegistroService>();
             services.AddScoped<IAvaliacaoService, AvaliacaoService>();
-            services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
-            services.AddScoped<IRegistroRepository, RegistroRepository>();
 
+            services.AddScoped<IRegistroRepository, RegistroRepository>();
+            services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
 
             return services;
         }

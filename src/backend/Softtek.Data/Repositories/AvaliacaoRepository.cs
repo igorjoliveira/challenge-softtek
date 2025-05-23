@@ -25,7 +25,9 @@ namespace Softtek.Data.Repositories
         {
             return await _context.Avaliacoes
                 .Include(a => a.BlocosDePergunta)
-                    .ThenInclude(b => b.Perguntas)                        
+                    .ThenInclude(b => b.Perguntas)
+                        .ThenInclude(c => c.Escala.ValoresAceitos)
+                            .ThenInclude(d => d.EscalaValor)
                 .FirstOrDefaultAsync(a => a.Codigo == avaliacaoCodigo);
         }
 

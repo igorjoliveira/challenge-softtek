@@ -2,9 +2,10 @@
 
 namespace Softtek.Application.DTOs
 {
-    public record AvaliacaoDto(
-        Ulid Codigo,
-        DateOnly DataCriacao,
-        List<BlocoDePerguntaDto> Blocos
-    );
+    public class AvaliacaoDto
+    {
+        public Ulid Codigo { get; set; }
+        public DateOnly DataCriacao { get; set; }
+        public List<BlocoDePerguntaDto> Blocos { get; set; } = new List<BlocoDePerguntaDto>();
+    }
 }

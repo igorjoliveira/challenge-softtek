@@ -57,7 +57,5 @@ namespace Softtek.Webapi.Controllers
             var result = await _service.ObterPerguntasPorBlocoAsync(avaliacaoCodigo, blocoCodigo);
             return Ok(result);
         }
-
-
     }
 }

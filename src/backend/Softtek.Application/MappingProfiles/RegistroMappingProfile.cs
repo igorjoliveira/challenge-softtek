@@ -1,18 +1,24 @@
 ﻿using AutoMapper;
 using Softtek.Application.DTOs;
 using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
-using Softtek.Domain.Aggregates.AvaliacaoPsicossocial.Escala;
 
 namespace Softtek.Application.MappingProfiles
 {
-    public class RegistroProfile : Profile
+    public class RegistroMappingProfile : Profile
     {
-        public RegistroProfile()
-        {
-            CreateMap<AvaliacaoAggregate, AvaliacaoDto>();
+        public RegistroMappingProfile()
+        {            
             CreateMap<BlocoDePergunta, BlocoDePerguntaDto>();
-            CreateMap<Pergunta, PerguntaDto>();
-            CreateMap<EscalaValor, EscalaValorDto>();
+
+            CreateMap<AvaliacaoAggregate, AvaliacaoDto>()
+                .ForMember(dest => dest.Blocos, opt => opt.MapFrom(src => src.BlocosDePergunta));
+            
+            CreateMap<Pergunta, PerguntaDto>()
+                .ForMember(dest => dest.EscalaDescricao, opt => opt.MapFrom(src => src.Escala.Descricao))
+                .ForMember(dest => dest.ValoresAceitos, opt => opt.MapFrom(src => src.Escala.ValoresAceitos));
+
+            CreateMap<FrequenciaPreenchimento, FrequenciaDto>()
+                .ConstructUsing(src => new FrequenciaDto((int)src, src.ToString()));
         }
     }
 }

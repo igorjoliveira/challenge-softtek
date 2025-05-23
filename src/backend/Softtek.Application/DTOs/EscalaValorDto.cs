@@ -2,8 +2,9 @@
 
 namespace Softtek.Application.DTOs
 {
-    public record EscalaValorDto(
-        Ulid Codigo,
-        string Descricao
-    );
+    public class EscalaValorDto
+    {
+        public Ulid Codigo { get; set; }
+        public string Descricao {get; set;}
+    }
 }
