@@ -10,13 +10,12 @@ namespace Softtek.Domain
         void main(string[] args)
         {
             var avaliacao = new AvaliacaoAggregate(DateOnly.FromDateTime(DateTime.Now));
-            avaliacao.AdicionarBloco(
-                new NovoBlocoDePergunta("Mapeamento de Riscos - Ansiedade/Depressão/Burnout", FrequenciaPreenchimento.Diario),
-                new NovoBlocoDePergunta("Fatores de Carga de Trabalho", FrequenciaPreenchimento.Mensal),
-                new NovoBlocoDePergunta("Sinais de Alerta", FrequenciaPreenchimento.Mensal),
-                new NovoBlocoDePergunta("Diagnóstico de Clima - Relacionamento", FrequenciaPreenchimento.Mensal),
-                new NovoBlocoDePergunta("Comunicação", FrequenciaPreenchimento.Mensal),
-                new NovoBlocoDePergunta("Relação com a Liderança", FrequenciaPreenchimento.Mensal));
+            avaliacao.AdicionarBloco(new NovoBlocoDePergunta("Mapeamento de Riscos - Ansiedade/Depressão/Burnout", FrequenciaPreenchimento.Diario));
+            avaliacao.AdicionarBloco(new NovoBlocoDePergunta("Fatores de Carga de Trabalho", FrequenciaPreenchimento.Mensal));
+            avaliacao.AdicionarBloco(new NovoBlocoDePergunta("Sinais de Alerta", FrequenciaPreenchimento.Mensal));
+            avaliacao.AdicionarBloco(new NovoBlocoDePergunta("Diagnóstico de Clima - Relacionamento", FrequenciaPreenchimento.Mensal));
+            avaliacao.AdicionarBloco(new NovoBlocoDePergunta("Comunicação", FrequenciaPreenchimento.Mensal));
+            avaliacao.AdicionarBloco(new NovoBlocoDePergunta("Relação com a Liderança", FrequenciaPreenchimento.Mensal));
 
             var valoresAceitos = new List<EscalaValor>
             {
@@ -105,7 +104,11 @@ namespace Softtek.Domain
             {
                 if (perguntasPorBloco.TryGetValue(bloco.Titulo, out var indices))
                 {
-                    bloco.AdicionarPergunta(indices.Select(i => perguntas[i]).ToArray());
+                    foreach (var index in indices)
+                    {
+                        var pergunta = perguntas[index];
+                        bloco.AdicionarPergunta(pergunta);
+                    }
                 }
             }
         }

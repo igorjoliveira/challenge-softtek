@@ -3,6 +3,7 @@ using NUlid;
 using Softtek.Application.DTOs;
 using Softtek.Application.Interfaces.Services;
 using Softtek.Domain.Aggregates.MonitoramentoEmocional.Commands;
+using Softtek.Domain.Exceptions;
 
 namespace Softtek.Application.Services
 {
@@ -34,7 +35,7 @@ namespace Softtek.Application.Services
             var questionario = await _repository.ObterQuestionarioPorIdAsync(codigoQuestionario);
             if (questionario is null)
             {
-                throw new Exception("Questionário não encontrado.");
+                throw new NotFoundException("Questionário não encontrado.");
             }
 
             var resposta = questionario.AdicionarResposta(new NovaResposta(dto.EscalaValorId, dto.PerguntaId));

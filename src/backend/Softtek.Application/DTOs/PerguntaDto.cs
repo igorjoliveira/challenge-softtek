@@ -10,4 +10,10 @@ namespace Softtek.Application.DTOs
         string EscalaDescricao,        
         List<EscalaValorDto> ValoresAceitos
     );
+
+    public record NovaPerguntaDto(
+        Ulid BlocoCodigo,
+        string Descricao,
+        Ulid EscalaCodigo
+    );
 }

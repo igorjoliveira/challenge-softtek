@@ -2,8 +2,7 @@
 
 namespace Softtek.Application.DTOs
 {
-    public record AvaliacaoDto(
-        Ulid Codigo,
+    public record NovaAvaliacaoDto(
         DateOnly DataCriacao,
         List<BlocoDePerguntaDto> Blocos
     );

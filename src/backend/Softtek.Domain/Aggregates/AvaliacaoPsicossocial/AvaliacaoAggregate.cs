@@ -11,14 +11,15 @@ public class AvaliacaoAggregate(DateOnly dataCriacao)
     public DateOnly DataCriacao { get; private set; } = dataCriacao;    
     public IReadOnlyCollection<BlocoDePergunta> BlocosDePergunta => _blocosDePergunta.AsReadOnly();
 
-    public void AdicionarBloco(params NovoBlocoDePergunta[] blocos)
+    public BlocoDePergunta AdicionarBloco(NovoBlocoDePergunta bloco)
     {
-        foreach (var bloco in blocos)
-        {
-            if (_blocosDePergunta.Any(b => b.Titulo == bloco.titulo))
-                throw new InvalidOperationException($"Bloco {bloco.titulo} já existe na avaliação.");
-            _blocosDePergunta.Add(new BlocoDePergunta(Codigo, bloco));
-        }
+        var blocoPergunta = new BlocoDePergunta(Codigo, bloco);
+
+        if (_blocosDePergunta.Any(b => b.GetHashCode() == bloco.GetHashCode()))
+            throw new InvalidOperationException($"Bloco {bloco.titulo} já existe na avaliação.");
+        
+        _blocosDePergunta.Add(blocoPergunta);
+        return blocoPergunta;
     }
     public List<BlocoDePergunta> ObterBlocosParaNotificacao(FrequenciaPreenchimento frequencia)
     {
@@ -33,4 +34,6 @@ public class AvaliacaoAggregate(DateOnly dataCriacao)
     {
         return _blocosDePergunta.Where(b => b.Frequencia == FrequenciaPreenchimento.Diario && b.Perguntas.All(p => p.Desativado == false));
     }
+    public BlocoDePergunta? ObterBloco(Ulid blocoCodigo)
+    => BlocosDePergunta.FirstOrDefault(b => b.Codigo == blocoCodigo);
 }

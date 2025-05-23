@@ -1,5 +1,6 @@
 
 using Softtek.IoC.DependencyInjection;
+using Softtek.Webapi.Configurations;
 
 namespace Softtek.Webapi
 {
@@ -27,6 +28,7 @@ namespace Softtek.Webapi
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
+            app.UseMiddleware<ExceptionMiddleware>();
             app.Run();
         }
     }
