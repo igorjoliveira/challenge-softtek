@@ -29,7 +29,7 @@ namespace Softtek.Application.Services
             return questionario is null ? null : _mapper.Map<DetalheQuestionarioDto>(questionario);
         }
 
-        public async Task<Ulid> EnviarRespostaAsync(Ulid codigoQuestionario, RespostaDto dto)
+        public async Task<Ulid> EnviarRespostaAsync(Ulid codigoQuestionario, NovaRespostaDto dto)
         {
             var questionario = await _repository.ObterQuestionarioPorIdAsync(codigoQuestionario);
             if (questionario is null)

@@ -7,7 +7,7 @@ namespace Softtek.Application.Interfaces.Services
     {
         Task<List<QuestionarioDto>> ListarQuestionariosAsync();
         Task<DetalheQuestionarioDto?> ObterQuestionarioAsync(Ulid id);
-        Task<Ulid> EnviarRespostaAsync(Ulid codigoQuestionario, RespostaDto dto);
+        Task<Ulid> EnviarRespostaAsync(Ulid codigoQuestionario, NovaRespostaDto dto);
     }
 
 }

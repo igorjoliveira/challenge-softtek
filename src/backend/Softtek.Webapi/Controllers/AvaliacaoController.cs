@@ -29,7 +29,7 @@ public class AvaliacaoController : ControllerBase
     }
 
     [HttpPost("{codigoQuestionario}/respostas")]
-    public async Task<IActionResult> PostResposta(Ulid codigoQuestionario, [FromBody] RespostaDto dto)
+    public async Task<IActionResult> PostResposta(Ulid codigoQuestionario, [FromBody] NovaRespostaDto dto)
     {
         await _service.EnviarRespostaAsync(codigoQuestionario, dto);
         return Created();

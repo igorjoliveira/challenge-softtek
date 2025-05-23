@@ -13,7 +13,7 @@ namespace Softtek.Application.MappingProfiles
             CreateMap<Questionario, QuestionarioDto>();
             CreateMap<EscalaValor, EscalaValorDto>();
             CreateMap<Pergunta, PerguntaDto>()
-                .ForMember(dest => dest.Valores, opt => opt.MapFrom(src => src.Escala.ValoresAceitos));
+                .ForMember(dest => dest.ValoresAceitos, opt => opt.MapFrom(src => src.Escala.ValoresAceitos));
             CreateMap<BlocoDePergunta, BlocoDePerguntaDto>()
                 .ForMember(dest => dest.Perguntas, opt => opt.MapFrom(src => src.Perguntas));
             CreateMap<Questionario, DetalheQuestionarioDto>()
