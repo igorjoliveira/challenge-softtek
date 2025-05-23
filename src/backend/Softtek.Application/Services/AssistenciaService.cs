@@ -54,6 +54,14 @@ namespace Softtek.Application.Services
             await _repository.AdicionarRecursoDeApoioAsync(recurso);
             return recurso.Codigo;
         }
+        public async Task<IEnumerable<AssistenciaDto>> ObterAssistenciasAsync()
+        {
+            var assistencias = await _repository.ObterAssistenciasAsync();
+            if (assistencias is null) 
+                throw new NotFoundException("Nenhuma assistência encontrada.");
+
+            return _mapper.Map<IEnumerable<AssistenciaDto>>(assistencias);
+        }
         public async Task<AssistenciaDto?> ObterAssistenciaAsync(Ulid codigo)
         {
             var assistencia = await _repository.ObterAssistenciaPorCodigoAsync(codigo);
