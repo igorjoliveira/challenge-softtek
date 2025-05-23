@@ -5,8 +5,9 @@ namespace Softtek.Application.Interfaces.Services
 {
     public interface IAvaliacaoService
     {
-        Task<Ulid> IniciarAvaliacaoAsync(DateOnly dataCriacao);
-        Task<IEnumerable<BlocoDePerguntaDto>> ObterBlocosPendentesAsync(Ulid avaliacaoCodigo);
-        Task AdicionarRespostaAsync(Ulid questionarioCodigo, Ulid perguntaCodigo, Ulid escalaValorCodigo);
+        Task<List<QuestionarioDto>> ListarQuestionariosAsync();
+        Task<DetalheQuestionarioDto?> ObterQuestionarioAsync(Ulid id);
+        Task<Ulid> EnviarRespostaAsync(Ulid codigoQuestionario, RespostaDto dto);
     }
+
 }

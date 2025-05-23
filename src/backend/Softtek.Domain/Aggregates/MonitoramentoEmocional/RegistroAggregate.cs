@@ -3,7 +3,7 @@ using Softtek.Domain.Aggregates.MonitoramentoEmocional.Commands;
 
 namespace Softtek.Domain.Aggregates.MonitoramentoEmocional;
 
-public class RegistroAggregate
+public class RegistroAggregate ()
 {
     private readonly List<Questionario> _questionarios = new();
     public IReadOnlyCollection<Questionario> Questionarios => _questionarios.AsReadOnly();

@@ -1,5 +1,6 @@
 ﻿using NUlid;
 using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
+using Softtek.Domain.Aggregates.MonitoramentoEmocional.Commands;
 
 namespace Softtek.Domain.Aggregates.MonitoramentoEmocional
 {
@@ -23,14 +24,15 @@ namespace Softtek.Domain.Aggregates.MonitoramentoEmocional
             BlocoDePerguntaCodigo = blocoDePerguntaCodigo;
         }
 
-        public void AdicionarResposta(Resposta resposta)
+        public Resposta AdicionarResposta(NovaResposta record)
         {
-            if (resposta == null)
-                throw new ArgumentNullException(nameof(resposta));
-            else if (_respostas.Any(r => r.Codigo == resposta.Codigo))
-                throw new InvalidOperationException($"A resposta com o código {resposta.Codigo} já existe no questionário.");
+            var resposta = new Resposta(record.perguntaCodigo, record.escalaValorCodigo);
+
+            if (_respostas.Any(r => r.GetHashCode() == resposta.GetHashCode()))
+                throw new InvalidOperationException($"A pergunta já possui uma resposta registrada.");
 
             _respostas.Add(resposta);
+            return resposta;
         }
     }
 }

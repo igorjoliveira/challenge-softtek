@@ -1,4 +1,5 @@
-using Softtek.IoC.Softtek.IoC.DependencyInjection;
+
+using Softtek.IoC.DependencyInjection;
 
 namespace Softtek.Webapi
 {

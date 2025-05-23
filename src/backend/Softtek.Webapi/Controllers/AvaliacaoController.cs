@@ -1,39 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NUlid;
+using Softtek.Application.DTOs;
 using Softtek.Application.Interfaces.Services;
 
-namespace Softtek.WebApi.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class AvaliacaoController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class AvaliacaoController : ControllerBase
+    private readonly IAvaliacaoService _service;
+
+    public AvaliacaoController(IAvaliacaoService service)
     {
-        private readonly IAvaliacaoService _avaliacaoService;
-
-        public AvaliacaoController(IAvaliacaoService avaliacaoService)
-        {
-            _avaliacaoService = avaliacaoService;
-        }
-
-        [HttpPost("iniciar")]
-        public async Task<IActionResult> IniciarAvaliacao(DateOnly dataCriacao)
-        {
-            var codigo = await _avaliacaoService.IniciarAvaliacaoAsync(dataCriacao);
-            return Ok(new { Codigo = codigo.ToString() });
-        }
-
-        [HttpGet("{codigo}/blocos-pendentes")]
-        public async Task<IActionResult> ObterBlocosPendentes(Ulid codigo)
-        {
-            var blocosPendentes = await _avaliacaoService.ObterBlocosPendentesAsync(codigo);
-            return Ok(blocosPendentes);
-        }
-
-        [HttpPost("{questionarioCodigo}/resposta")]
-        public async Task<IActionResult> AdicionarResposta(Ulid questionarioCodigo, Ulid perguntaCodigo, Ulid escalaValorCodigo)
-        {
-            await _avaliacaoService.AdicionarRespostaAsync(questionarioCodigo, perguntaCodigo, escalaValorCodigo);
-            return Ok();
-        }
+        _service = service;
     }
+
+    [HttpGet("questionarios")]
+    public async Task<IActionResult> GetQuestionarios()
+    {
+        var result = await _service.ListarQuestionariosAsync();
+        return Ok(result);
+    }
+
+    [HttpGet("questionarios/{codigoQuestionario}")]
+    public async Task<IActionResult> GetQuestionario(Ulid codigoQuestionario)
+    {
+        var result = await _service.ObterQuestionarioAsync(codigoQuestionario);
+        return result is null ? NotFound() : Ok(result);
+    }
+
+    [HttpPost("{codigoQuestionario}/respostas")]
+    public async Task<IActionResult> PostResposta(Ulid codigoQuestionario, [FromBody] RespostaDto dto)
+    {
+        await _service.EnviarRespostaAsync(codigoQuestionario, dto);
+        return Created();
+    }
+
 }
