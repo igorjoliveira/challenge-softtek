@@ -59,16 +59,14 @@ namespace Softtek.Application.Services
             var assistencia = await _repository.ObterAssistenciaPorCodigoAsync(codigo);
             if (assistencia is null) return null;
 
-            var dto = _mapper.Map<AssistenciaDto>(assistencia);
-            dto.Apoios = assistencia.Apoios.Select(_mapper.Map<ApoioDto>).ToList();
-            return dto;
+            return _mapper.Map<AssistenciaDto>(assistencia);
         }
         public async Task<IEnumerable<ApoioDto>> ObterApoiosAsync(Ulid codigo)
         {
             var assistencia = await _repository.ObterAssistenciaPorCodigoAsync(codigo)
                 ?? throw new NotFoundException("Assistência não encontrada.");
 
-            return assistencia.Apoios.Select(_mapper.Map<ApoioDto>);
+            return _mapper.Map<IEnumerable<ApoioDto>>(assistencia.Apoios);
         }
         public async Task<IEnumerable<ApoioDto>> ObterApoiosPorDataAsync(Ulid codigo, DateTime data)
         {
@@ -76,7 +74,7 @@ namespace Softtek.Application.Services
                 ?? throw new NotFoundException("Assistência não encontrada.");
 
             var apoios = assistencia.ObterApoiosPorData(data);
-            return apoios.Select(_mapper.Map<ApoioDto>);
+            return _mapper.Map<IEnumerable<ApoioDto>>(apoios);
         }
         public async Task<IEnumerable<ApoioDto>> ObterRecursosPorTipoAsync(Ulid codigo, string tipo)
         {
@@ -87,7 +85,7 @@ namespace Softtek.Application.Services
                 throw new ArgumentException("Tipo de recurso inválido.");
 
             var recursos = assistencia.ObterApoiosPorTipo(tipoRecurso);
-            return recursos.Select(_mapper.Map<ApoioDto>);
+            return _mapper.Map<IEnumerable<ApoioDto>>(recursos);
         }
         public async Task<IEnumerable<ApoioDto>> ObterNotificacoesUrgentesAsync(Ulid codigo)
         {
@@ -95,7 +93,7 @@ namespace Softtek.Application.Services
                 ?? throw new NotFoundException("Assistência não encontrada.");
 
             var urgentes = assistencia.ObterNotificacoesUrgentes();
-            return urgentes.Select(_mapper.Map<ApoioDto>);
+            return _mapper.Map<IEnumerable<ApoioDto>>(urgentes);
         }
     }
 }
