@@ -2,10 +2,13 @@
 
 namespace Softtek.Application.DTOs
 {
-    public class RespostaDto
-    {
-        public Ulid Codigo { get; set; }
-        public Ulid PerguntaCodigo { get; set; }
-        public Ulid EscalaValorCodigo { get; set; }
-    }
+    public record NovaRespostaDto(
+        Ulid PerguntaId,
+        Ulid EscalaValorId
+    );
+
+    public record RespostaDto(
+        PerguntaDto Pergunta,
+        EscalaValorDto EscalaValor
+    );
 }

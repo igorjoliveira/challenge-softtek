@@ -23,22 +23,24 @@ namespace Softtek.Domain.Aggregates.AvaliacaoPsicossocial
             Frequencia = bloco.frequencia;
         }
 
-        public void AdicionarPergunta(params NovaPergunta[] perguntas)
-        {
-            if (perguntas is null)
-                throw new ArgumentNullException(nameof(perguntas));
+        public Pergunta AdicionarPergunta(NovaPergunta novaPergunta)
+        {            
+            var pergunta = new Pergunta(Codigo, novaPergunta);
 
-            foreach (var pergunta in perguntas)
-            {
-                if (_perguntas.Any(q => q.Descricao == pergunta.descricao))
-                    throw new InvalidOperationException($"A pergunta '{pergunta.descricao}' já existe no bloco de perguntas.");
+            if (_perguntas.Any(q => q.Descricao == novaPergunta.descricao))
+                throw new InvalidOperationException($"A pergunta '{novaPergunta.descricao}' já existe no bloco de perguntas.");
 
-                _perguntas.Add(new Pergunta(Codigo, pergunta));
-            }
+            _perguntas.Add(pergunta);
+            return pergunta;
         }
         public void RemoverPergunta(Ulid perguntaId)
         {
             _perguntas.RemoveAll(p => p.Codigo == perguntaId);
+        }
+
+        public override int GetHashCode()
+        {
+            return $"{Titulo}-{Frequencia}".ToUpper().GetHashCode();
         }
     }
 }

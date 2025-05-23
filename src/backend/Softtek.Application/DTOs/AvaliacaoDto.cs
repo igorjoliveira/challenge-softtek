@@ -6,6 +6,6 @@ namespace Softtek.Application.DTOs
     {
         public Ulid Codigo { get; set; }
         public DateOnly DataCriacao { get; set; }
-        public IEnumerable<BlocoDePerguntaDto> BlocosDePergunta { get; set; } = new List<BlocoDePerguntaDto>();
+        public List<BlocoDePerguntaDto> Blocos { get; set; } = new List<BlocoDePerguntaDto>();
     }
 }

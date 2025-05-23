@@ -2,62 +2,50 @@
 using NUlid;
 using Softtek.Application.DTOs;
 using Softtek.Application.Interfaces.Services;
-using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
-using Softtek.Domain.Aggregates.MonitoramentoEmocional;
-using Softtek.Domain.Repositories;
+using Softtek.Domain.Aggregates.MonitoramentoEmocional.Commands;
+using Softtek.Domain.Exceptions;
 
 namespace Softtek.Application.Services
 {
     public class AvaliacaoService : IAvaliacaoService
     {
-        private readonly IAvaliacaoRepository _avaliacaoRepository;
-        private readonly IRegistroRepository _registroRepository;
+        private readonly IRegistroRepository _repository;
         private readonly IMapper _mapper;
 
-        public AvaliacaoService(
-            IAvaliacaoRepository avaliacaoRepository,
-            IRegistroRepository registroRepository,
-            IMapper mapper)
+        public AvaliacaoService(IRegistroRepository repository, IMapper mapper)
         {
-            _avaliacaoRepository = avaliacaoRepository;
-            _registroRepository = registroRepository;
+            _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<Ulid> IniciarAvaliacaoAsync(DateOnly dataCriacao)
+        public async Task<List<QuestionarioDto>> ListarQuestionariosAsync()
         {
-            var avaliacao = new AvaliacaoAggregate(dataCriacao);
-            await _avaliacaoRepository.AdicionarAsync(avaliacao);
-            return avaliacao.Codigo;
+            var questionarios = await _repository.ObterTodosQuestionariosAsync();
+            return _mapper.Map<List<QuestionarioDto>>(questionarios);
         }
 
-        public async Task<IEnumerable<BlocoDePerguntaDto>> ObterBlocosPendentesAsync(Ulid avaliacaoCodigo)
+        public async Task<DetalheQuestionarioDto?> ObterQuestionarioAsync(Ulid id)
         {
-            var avaliacao = await _avaliacaoRepository.ObterPorCodigoAsync(avaliacaoCodigo);
-            if (avaliacao == null) return Enumerable.Empty<BlocoDePerguntaDto>();
-
-            var blocosPendentes = avaliacao.ObterBlocosPendentes(DateOnly.FromDateTime(DateTime.Now));
-            return _mapper.Map<IEnumerable<BlocoDePerguntaDto>>(blocosPendentes);
+            var questionario = await _repository.ObterQuestionarioPorIdAsync(id);
+            return questionario is null ? null : _mapper.Map<DetalheQuestionarioDto>(questionario);
         }
 
-        public async Task AdicionarRespostaAsync(Ulid questionarioCodigo, Ulid perguntaCodigo, Ulid escalaValorCodigo)
+        public async Task<Ulid> EnviarRespostaAsync(Ulid codigoQuestionario, NovaRespostaDto dto)
         {
-            var registro = (await _registroRepository.ObterTodosAsync())
-                                .FirstOrDefault(r => r.Questionarios.Any(q => q.Codigo == questionarioCodigo));
-
-            if (registro == null)
-                throw new Exception("Questionário não encontrado.");
-
-            var questionario = registro.ObterQuestionario(questionarioCodigo);
-            var resposta = new Resposta
+            var questionario = await _repository.ObterQuestionarioPorIdAsync(codigoQuestionario);
+            if (questionario is null)
             {
-                Codigo = Ulid.NewUlid(),
-                PerguntaCodigo = perguntaCodigo,
-                EscalaValorCodigo = escalaValorCodigo
-            };
+                throw new NotFoundException("Questionário não encontrado.");
+            }
 
-            questionario.AdicionarResposta(resposta);
-            await _registroRepository.AtualizarAsync(registro);
+            var resposta = questionario.AdicionarResposta(new NovaResposta(dto.EscalaValorId, dto.PerguntaId));
+            var codigo = await _repository.AdicionarRespostaAsync(resposta);
+            if (codigo == 0)
+            {
+                throw new Exception("Erro ao adicionar resposta.");
+            }
+
+            return resposta.Codigo;
         }
     }
 }

@@ -5,12 +5,10 @@ namespace Softtek.Domain.Repositories
 {
     public interface IAvaliacaoRepository
     {
-        Task AdicionarAsync(AvaliacaoAggregate entidade);
-        Task AtualizarAsync(AvaliacaoAggregate entidade);
-        Task<AvaliacaoAggregate?> ObterPorCodigoAsync(Ulid codigo);
-        Task<IEnumerable<AvaliacaoAggregate>> ObterTodosAsync();
-        Task RemoverAsync(Ulid codigo);
-        Task<IEnumerable<BlocoDePergunta>> ObterBlocosPorFrequenciaAsync(FrequenciaPreenchimento frequencia);
-        Task<IEnumerable<BlocoDePergunta>> ObterBlocosEmAtrasoAsync();
+        Task<int> CriarAvaliacaoAsync(AvaliacaoAggregate avaliacao);
+        Task<AvaliacaoAggregate?> ObterAvaliacaoPorIdAsync(Ulid avaliacaoCodigo);
+        Task<IList<AvaliacaoAggregate>> ListarAvaliacoesAsync();
+        Task<int> AdicionarBlocoAsync(BlocoDePergunta bloco);
+        Task<int> AdicionarPerguntaAsync(Pergunta pergunta);
     }
 }

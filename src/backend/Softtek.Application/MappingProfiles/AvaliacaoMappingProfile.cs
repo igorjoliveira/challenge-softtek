@@ -9,9 +9,16 @@ namespace Softtek.Application.MappingProfiles
     {
         public AvaliacaoMappingProfile()
         {
-            CreateMap<AvaliacaoAggregate, AvaliacaoDto>();
-            CreateMap<BlocoDePergunta, BlocoDePerguntaDto>();
-            CreateMap<Resposta, RespostaDto>();
+            CreateMap<Questionario, QuestionarioDto>();                        
+
+            CreateMap<Pergunta, PerguntaDto>()
+                .ForMember(dest => dest.ValoresAceitos, opt => opt.MapFrom(src => src.Escala.ValoresAceitos));
+
+            CreateMap<BlocoDePergunta, BlocoDePerguntaDto>()
+                .ForMember(dest => dest.Perguntas, opt => opt.MapFrom(src => src.Perguntas));
+
+            CreateMap<Questionario, DetalheQuestionarioDto>()
+                .ForMember(dest => dest.Bloco, opt => opt.MapFrom(src => src.BlocoDePergunta));
         }
     }
 }

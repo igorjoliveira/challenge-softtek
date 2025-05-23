@@ -1,4 +1,8 @@
-using Softtek.IoC.Softtek.IoC.DependencyInjection;
+
+using Microsoft.AspNetCore.Http.Json;
+using Softtek.IoC.DependencyInjection;
+using Softtek.Webapi.Configurations;
+using Softtek.Webapi.Converters;
 
 namespace Softtek.Webapi
 {
@@ -10,12 +14,15 @@ namespace Softtek.Webapi
             
             // Add services to the container.
             builder.Services.AddApplicationServices(builder.Configuration);
-            builder.Services.AddControllers();
-            
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new UlidJsonConverter());
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            
+
             var app = builder.Build();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -26,6 +33,7 @@ namespace Softtek.Webapi
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
+            app.UseMiddleware<ExceptionMiddleware>();
             app.Run();
         }
     }

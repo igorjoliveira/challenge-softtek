@@ -8,27 +8,27 @@ using Softtek.Data.Context;
 using Softtek.Data.Repositories;
 using Softtek.Domain.Repositories;
 
-namespace Softtek.IoC
+namespace Softtek.IoC.DependencyInjection
 {
-    namespace Softtek.IoC.DependencyInjection
+    public static class DependencyInjectionConfig
     {
-        public static class DependencyInjectionConfig
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
-            {
-                // DbContext
-                services.AddDbContext<SofttekDbContext>(options =>
-                    options.UseSqlite(configuration.GetConnectionString("SofttekDb")));
+            // DbContext
+            services.AddDbContext<SofttekDbContext>(options =>
+                options.UseSqlite(configuration.GetConnectionString("SofttekDb")));
 
-                services.AddAutoMapper(typeof(AvaliacaoMappingProfile));
+            services.AddAutoMapper(typeof(EscalaMappingProfile));
+            services.AddAutoMapper(typeof(RegistroMappingProfile));
+            services.AddAutoMapper(typeof(AvaliacaoMappingProfile));
 
-                services.AddScoped<IAvaliacaoService, AvaliacaoService>();
-                services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
-                services.AddScoped<IRegistroRepository, RegistroRepository>();
+            services.AddScoped<IRegistroService, RegistroService>();
+            services.AddScoped<IAvaliacaoService, AvaliacaoService>();
 
+            services.AddScoped<IRegistroRepository, RegistroRepository>();
+            services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
 
-                return services;
-            }
+            return services;
         }
     }
 }

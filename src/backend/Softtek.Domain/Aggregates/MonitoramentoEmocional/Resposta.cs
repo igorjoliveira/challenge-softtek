@@ -6,12 +6,24 @@ namespace Softtek.Domain.Aggregates.MonitoramentoEmocional
 {
     public class Resposta
     {
-        public required Ulid Codigo { get; set; }
+        public Ulid Codigo { get; set; }
 
-        public required Ulid EscalaValorCodigo { get; set; }
+        public Ulid EscalaValorCodigo { get; set; }
         public EscalaValor EscalaValor { get; set; } = null!;
 
-        public required Ulid PerguntaCodigo { get; set; }
+        public Ulid PerguntaCodigo { get; set; }
         public Pergunta Pergunta { get; set; } = null!;
+
+        public Resposta(Ulid escalaValorCodigo, Ulid perguntaCodigo)
+        {
+            Ulid.NewUlid();
+            EscalaValorCodigo = escalaValorCodigo;
+            PerguntaCodigo = perguntaCodigo;
+        }
+
+        public override int GetHashCode()
+        {
+            return $"{PerguntaCodigo}-{EscalaValorCodigo}".GetHashCode();
+        }
     }
 }

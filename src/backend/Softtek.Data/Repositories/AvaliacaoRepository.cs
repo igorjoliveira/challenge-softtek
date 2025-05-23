@@ -15,46 +15,37 @@ namespace Softtek.Data.Repositories
             _context = context;
         }
 
-        public async Task AdicionarAsync(AvaliacaoAggregate entidade)
+        public async Task<int> CriarAvaliacaoAsync(AvaliacaoAggregate avaliacao)
         {
-            await _context.Avaliacoes.AddAsync(entidade);
-            await _context.SaveChangesAsync();
+            _context.Avaliacoes.Add(avaliacao);
+            return await _context.SaveChangesAsync();
         }
 
-        public async Task AtualizarAsync(AvaliacaoAggregate entidade)
+        public async Task<AvaliacaoAggregate?> ObterAvaliacaoPorIdAsync(Ulid avaliacaoCodigo)
         {
-            _context.Avaliacoes.Update(entidade);
-            await _context.SaveChangesAsync();
+            return await _context.Avaliacoes
+                .Include(a => a.BlocosDePergunta)
+                    .ThenInclude(b => b.Perguntas)
+                        .ThenInclude(c => c.Escala.ValoresAceitos)
+                            .ThenInclude(d => d.EscalaValor)
+                .FirstOrDefaultAsync(a => a.Codigo == avaliacaoCodigo);
         }
 
-        public async Task<AvaliacaoAggregate?> ObterPorCodigoAsync(Ulid codigo)
+        public async Task<IList<AvaliacaoAggregate>> ListarAvaliacoesAsync()
         {
-            return await _context.Avaliacoes.Include(a => a.BlocosDePergunta).FirstOrDefaultAsync(a => a.Codigo == codigo);
+            return await _context.Avaliacoes.ToListAsync();
         }
 
-        public async Task<IEnumerable<AvaliacaoAggregate>> ObterTodosAsync()
+        public async Task<int> AdicionarBlocoAsync(BlocoDePergunta bloco)
         {
-            return await _context.Avaliacoes.Include(a => a.BlocosDePergunta).ToListAsync();
+            await _context.BlocosDePergunta.AddAsync(bloco);
+            return await _context.SaveChangesAsync();
         }
 
-        public async Task RemoverAsync(Ulid codigo)
-        {
-            var avaliacao = await ObterPorCodigoAsync(codigo);
-            if (avaliacao != null)
-            {
-                _context.Avaliacoes.Remove(avaliacao);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task<IEnumerable<BlocoDePergunta>> ObterBlocosPorFrequenciaAsync(FrequenciaPreenchimento frequencia)
-        {
-            return await _context.BlocosDePergunta.Where(b => b.Frequencia == frequencia).ToListAsync();
-        }
-
-        public async Task<IEnumerable<BlocoDePergunta>> ObterBlocosEmAtrasoAsync()
-        {
-            return await _context.BlocosDePergunta.Where(b => b.Perguntas.All(p => p.Desativado == false)).ToListAsync();
+        public async Task<int> AdicionarPerguntaAsync(Pergunta pergunta)
+        {            
+            await _context.Perguntas.AddAsync(pergunta);
+            return await _context.SaveChangesAsync();
         }
     }
 }
