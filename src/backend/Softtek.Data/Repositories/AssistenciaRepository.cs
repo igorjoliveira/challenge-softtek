@@ -21,6 +21,11 @@ namespace Softtek.Data.Repositories
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<IList<AssistenciaAggregate>> ObterAssistenciasAsync()
+        {
+            return await _context.Assistencias.Include(a => a.Apoios).ToListAsync();
+        }
+
         public async Task<AssistenciaAggregate?> ObterAssistenciaPorCodigoAsync(Ulid codigo)
         {
             return await _context.Assistencias

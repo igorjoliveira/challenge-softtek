@@ -9,6 +9,7 @@ namespace Softtek.Application.Interfaces.Services
         Task<Ulid> AdicionarLembreteAsync(Ulid assistenciaCodigo, NovoLembreteDto dto);
         Task<Ulid> AdicionarNotificacaoAsync(Ulid assistenciaCodigo, NovaNotificacaoDto dto);
         Task<Ulid> AdicionarRecursoAsync(Ulid assistenciaCodigo, NovoRecursoDeApoioDto dto);
+        Task<IEnumerable<AssistenciaDto>> ObterAssistenciasAsync();
         Task<AssistenciaDto?> ObterAssistenciaAsync(Ulid codigo);
         Task<IEnumerable<ApoioDto>> ObterApoiosAsync(Ulid codigo);
         Task<IEnumerable<ApoioDto>> ObterApoiosPorDataAsync(Ulid codigo, DateTime data);

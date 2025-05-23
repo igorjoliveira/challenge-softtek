@@ -44,6 +44,13 @@ namespace Softtek.Webapi.Controllers
             return Ok(id);
         }
 
+        [HttpGet("")]
+        public async Task<IActionResult> ObterAssistencias()
+        {
+            var result = await _service.ObterAssistenciasAsync();
+            return Ok(result);
+        }
+
         [HttpGet("{codigo}")]
         public async Task<IActionResult> ObterAssistencia(Ulid codigo)
         {
