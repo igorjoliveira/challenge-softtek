@@ -21,7 +21,15 @@ namespace Softtek.Webapi
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new()
+                {
+                    Title = "Challenge Softtek API",
+                    Version = "v1",
+                    Description = "API para suporte à saúde mental e psicossocial dos colaboradores."
+                });
+            });
 
             var app = builder.Build();
             // Configure the HTTP request pipeline.
