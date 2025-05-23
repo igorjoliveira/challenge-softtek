@@ -3,7 +3,7 @@ using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
 
 namespace Softtek.Application.DTOs
 {
-    public record BlocoDePerguntaDto
+    public class BlocoDePerguntaDto
     {
         public Ulid Codigo { get; set; }
         public string Titulo {get; set;}

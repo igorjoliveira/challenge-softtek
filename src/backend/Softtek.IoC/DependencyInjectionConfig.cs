@@ -6,7 +6,8 @@ using Softtek.Application.MappingProfiles;
 using Softtek.Application.Services;
 using Softtek.Data.Context;
 using Softtek.Data.Repositories;
-using Softtek.Domain.Repositories;
+using Softtek.Domain.Aggregates.AssistenciaEmocional;
+using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
 
 namespace Softtek.IoC.DependencyInjection
 {
@@ -24,9 +25,11 @@ namespace Softtek.IoC.DependencyInjection
 
             services.AddScoped<IRegistroService, RegistroService>();
             services.AddScoped<IAvaliacaoService, AvaliacaoService>();
+            services.AddScoped<IAssistenciaService, AssistenciaService>();
 
             services.AddScoped<IRegistroRepository, RegistroRepository>();
             services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
+            services.AddScoped<IAssistenciaRepository, AssistenciaRepository>();
 
             return services;
         }

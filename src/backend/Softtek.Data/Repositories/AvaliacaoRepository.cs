@@ -2,7 +2,6 @@
 using NUlid;
 using Softtek.Data.Context;
 using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
-using Softtek.Domain.Repositories;
 
 namespace Softtek.Data.Repositories
 {

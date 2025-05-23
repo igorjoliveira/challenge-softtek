@@ -17,6 +17,7 @@ public class SofttekDbContext : DbContext
     public DbSet<EscalaBase> Escalas { get; set; } = null!;
     public DbSet<EscalaValor> EscalaValores { get; set; } = null!;
     public DbSet<EscalaBaseValor> EscalaBaseValores { get; set; } = null!;
+    public DbSet<AssistenciaAggregate> Assistencias { get; set; } = null!;
     public DbSet<ApoioBase> Apoios { get; set; } = null!;
     public DbSet<Lembrete> Lembretes { get; set; } = null!;
     public DbSet<Notificacao> Notificacoes { get; set; } = null!;

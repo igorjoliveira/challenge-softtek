@@ -1,4 +1,5 @@
 ﻿using NUlid;
+using Softtek.Domain.Aggregates.AssistenciaEmocional.Commands;
 using Softtek.Domain.Aggregates.AssistenciaEmocional.Tipos;
 using Softtek.Domain.Aggregates.AvaliacaoPsicossocial;
 
@@ -7,10 +8,10 @@ namespace Softtek.Domain.Aggregates.AssistenciaEmocional
     public class AssistenciaAggregate
     {
         private readonly List<ApoioBase> _apoios = new();
-        public Ulid Codigo { get; private set; }        
+        public Ulid Codigo { get; private set; } = Ulid.NewUlid();        
         public IReadOnlyCollection<ApoioBase> Apoios => _apoios.AsReadOnly();
 
-        public void AdicionarApoio(ApoioBase apoio)
+        private void AdicionarApoio(ApoioBase apoio)
         {
             _apoios.Add(apoio);
         }
@@ -69,5 +70,26 @@ namespace Softtek.Domain.Aggregates.AssistenciaEmocional
         {
             return _apoios.OfType<Notificacao>().Where(n => n.Urgente);
         }
+        public Lembrete CriarLembrete(NovoLembrete comando)
+        {
+            var lembrete = new Lembrete(comando.Titulo, comando.Descricao, comando.DataAgendada);
+            AdicionarApoio(lembrete);
+            return lembrete;
+        }
+
+        public Notificacao CriarNotificacao(NovaNotificacao comando)
+        {
+            var notificacao = new Notificacao(comando.Titulo, comando.Descricao, comando.Urgente, comando.NivelGravidade);
+            AdicionarApoio(notificacao);
+            return notificacao;
+        }
+
+        public RecursoDeApoio CriarRecursoDeApoio(NovoRecursoDeApoio comando)
+        {
+            var recurso = new RecursoDeApoio(comando.Titulo, comando.Link, comando.Tipo, comando.Categoria);
+            AdicionarApoio(recurso);
+            return recurso;
+        }
+
     }
 }

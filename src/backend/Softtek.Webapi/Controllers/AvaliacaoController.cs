@@ -15,21 +15,21 @@ public class AvaliacaoController : ControllerBase
     }
 
     [HttpGet("questionarios")]
-    public async Task<IActionResult> GetQuestionarios()
+    public async Task<IActionResult> ListarQuestionarios()
     {
         var result = await _service.ListarQuestionariosAsync();
         return Ok(result);
     }
 
     [HttpGet("questionarios/{codigoQuestionario}")]
-    public async Task<IActionResult> GetQuestionario(Ulid codigoQuestionario)
+    public async Task<IActionResult> ObterQuestionario(Ulid codigoQuestionario)
     {
         var result = await _service.ObterQuestionarioAsync(codigoQuestionario);
         return result is null ? NotFound() : Ok(result);
     }
 
     [HttpPost("{codigoQuestionario}/respostas")]
-    public async Task<IActionResult> PostResposta(Ulid codigoQuestionario, [FromBody] NovaRespostaDto dto)
+    public async Task<IActionResult> AdicionarResposta(Ulid codigoQuestionario, [FromBody] NovaRespostaDto dto)
     {
         await _service.EnviarRespostaAsync(codigoQuestionario, dto);
         return Created();

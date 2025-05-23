@@ -17,19 +17,16 @@ namespace Softtek.Application.Services
             _repository = repository;
             _mapper = mapper;
         }
-
         public async Task<List<QuestionarioDto>> ListarQuestionariosAsync()
         {
             var questionarios = await _repository.ObterTodosQuestionariosAsync();
             return _mapper.Map<List<QuestionarioDto>>(questionarios);
         }
-
         public async Task<DetalheQuestionarioDto?> ObterQuestionarioAsync(Ulid id)
         {
             var questionario = await _repository.ObterQuestionarioPorIdAsync(id);
             return questionario is null ? null : _mapper.Map<DetalheQuestionarioDto>(questionario);
         }
-
         public async Task<Ulid> EnviarRespostaAsync(Ulid codigoQuestionario, NovaRespostaDto dto)
         {
             var questionario = await _repository.ObterQuestionarioPorIdAsync(codigoQuestionario);

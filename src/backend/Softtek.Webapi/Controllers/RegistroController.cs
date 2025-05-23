@@ -30,7 +30,7 @@ namespace Softtek.Webapi.Controllers
             return Ok(codigo);
         }
 
-        [HttpPost("{avaliacaoCodigo}/blocos/{blocoCodigo}/perguntas")]
+        [HttpPost("avaliacoes/{avaliacaoCodigo}/blocos/{blocoCodigo}/perguntas")]
         public async Task<IActionResult> AdicionarPergunta(Ulid avaliacaoCodigo, Ulid blocoCodigo, [FromBody] NovaPerguntaDto dto)
         {
             var codigos = await _service.AdicionarPerguntaAsync(avaliacaoCodigo, blocoCodigo, dto);
