@@ -3,16 +3,19 @@ package com.fiap.softtekapp.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(codigo: String) {
+fun MainScreen(codigo: String, navController: NavController) {
 
     val viewModel = remember { MainViewModel(codigo) }
     val apoios by viewModel.apoios.collectAsState()
@@ -22,8 +25,11 @@ fun MainScreen(codigo: String) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = {
-                    Text("Assistência Emocional")
+                title = { Text("Assistência Emocional") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                    }
                 }
             )
         },

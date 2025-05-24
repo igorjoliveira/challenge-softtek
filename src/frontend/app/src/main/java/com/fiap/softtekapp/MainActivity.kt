@@ -7,10 +7,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import com.fiap.softtekapp.ui.AssistenciaListScreen
+import com.fiap.softtekapp.ui.AvaliacaoListScreen
+import com.fiap.softtekapp.ui.BlocoListScreen
 import com.fiap.softtekapp.ui.MainScreen
 import com.fiap.softtekapp.ui.theme.SofttekappTheme
 
@@ -29,13 +32,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
-    NavHost(
-        navController = navController,
-        startDestination = "assistencias"
-    ) {
+    NavHost(navController = navController, startDestination = "assistencias") {
         composable("assistencias") {
             AssistenciaListScreen(navController)
         }
@@ -44,7 +44,17 @@ fun AppNavigation() {
             arguments = listOf(navArgument("codigo") { type = NavType.StringType })
         ) { backStackEntry ->
             val codigo = backStackEntry.arguments?.getString("codigo") ?: ""
-            MainScreen(codigo)
+            MainScreen(codigo, navController)
+        }
+        composable("avaliacoes") {
+            AvaliacaoListScreen(navController)
+        }
+        composable(
+            route = "blocos/{avaliacaoCodigo}",
+            arguments = listOf(navArgument("avaliacaoCodigo") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val codigo = backStackEntry.arguments?.getString("avaliacaoCodigo") ?: ""
+            BlocoListScreen(codigo, navController)
         }
     }
 }

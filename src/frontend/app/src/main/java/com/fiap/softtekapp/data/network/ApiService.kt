@@ -1,7 +1,9 @@
 package com.fiap.softtekapp.data.network
 
 import com.fiap.softtekapp.data.model.*
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ApiService {
@@ -9,15 +11,15 @@ interface ApiService {
     @GET("api/assistencia/{codigo}")
     suspend fun obterAssistencia(
         @Path("codigo") codigo: String
-    ): AssistenciaResponse
+    ): AssistenciaDto
 
     @GET("api/assistencia")
     suspend fun listarAssistencias(): List<AssistenciaResumoDto>
 
-}
+    @GET("api/registro/avaliacoes")
+    suspend fun listarAvaliacoes(): List<AvaliacaoResumoDto>
 
-// Resposta da API contendo a lista de apoios
-data class AssistenciaResponse(
-    val codigo: String,
-    val apoios: List<ApoioDto>
-)
+    @GET("api/registro/{avaliacaoCodigo}/blocos")
+    suspend fun obterBlocos(@Path("avaliacaoCodigo") codigo: String): List<BlocoDto>
+
+}
