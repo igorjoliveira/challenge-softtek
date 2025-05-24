@@ -28,11 +28,10 @@ public class AvaliacaoController : ControllerBase
         return result is null ? NotFound() : Ok(result);
     }
 
-    [HttpPost("{codigoQuestionario}/respostas")]
-    public async Task<IActionResult> AdicionarResposta(Ulid codigoQuestionario, [FromBody] NovaRespostaDto dto)
+    [HttpPost("questionarios/{dataPreenchimento}/respostas")]
+    public async Task<IActionResult> AdicionarResposta(DateOnly dataPreenchimento, [FromBody] NovoQuestionarioDto dto)
     {
-        await _service.EnviarRespostaAsync(codigoQuestionario, dto);
+        await _service.EnviarRespostaAsync(dataPreenchimento, dto);
         return Created();
     }
-
 }

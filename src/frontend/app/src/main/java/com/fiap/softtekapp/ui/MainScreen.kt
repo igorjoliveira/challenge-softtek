@@ -12,15 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.fiap.softtekapp.data.network.RetrofitInstance
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(codigo: String, navController: NavController) {
-
     val viewModel = remember { MainViewModel(codigo) }
     val apoios by viewModel.apoios.collectAsState()
     val loading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.carregarAssistencia();
+    }
 
     Scaffold(
         topBar = {
@@ -42,12 +47,6 @@ fun MainScreen(codigo: String, navController: NavController) {
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(onClick = { viewModel.carregarAssistencia() }) {
-                    Text("Carregar Assistência")
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
                 if (loading) {
                     CircularProgressIndicator()
                 } else if (error != null) {

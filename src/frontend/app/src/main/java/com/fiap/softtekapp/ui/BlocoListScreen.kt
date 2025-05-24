@@ -26,9 +26,9 @@ fun BlocoListScreen(avaliacaoCodigo: String, navController: NavController) {
     LaunchedEffect(Unit) {
         scope.launch {
             try {
-                blocos = RetrofitInstance.api.obterBlocos(avaliacaoCodigo)
+                blocos = RetrofitInstance.api.obterBlocosPorAvaliacao(avaliacaoCodigo)
             } catch (e: Exception) {
-                error = e.localizedMessage ?: "Erro ao carregar blocos"
+                error = e.localizedMessage
             } finally {
                 loading = false
             }
@@ -65,7 +65,7 @@ fun BlocoListScreen(avaliacaoCodigo: String, navController: NavController) {
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
                                 .clickable {
-                                    navController.navigate("perguntas/${bloco.codigo}")
+                                    navController.navigate("perguntas/$avaliacaoCodigo/${bloco.codigo}")
                                 }
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {

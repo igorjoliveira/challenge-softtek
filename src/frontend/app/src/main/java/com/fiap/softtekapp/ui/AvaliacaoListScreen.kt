@@ -28,7 +28,7 @@ fun AvaliacaoListScreen(navController: NavController) {
             try {
                 avaliacoes = RetrofitInstance.api.listarAvaliacoes()
             } catch (e: Exception) {
-                error = e.localizedMessage ?: "Erro ao carregar avaliações"
+                error = e.localizedMessage
             } finally {
                 loading = false
             }
@@ -38,7 +38,7 @@ fun AvaliacaoListScreen(navController: NavController) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Selecione uma Avaliação") },
+                title = { Text("Avaliações") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
