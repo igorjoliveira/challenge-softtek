@@ -33,12 +33,19 @@ public class RegistroRepository : IRegistroRepository
         return await _context.Questionarios
             .Include(q => q.BlocoDePergunta)
                 .ThenInclude(b => b.Perguntas)
+            .Include(q => q.Respostas)
             .FirstOrDefaultAsync(q => q.DataPreenchimento == dataPreenchimento);
     }
 
     public async Task<int> AdicionarRespostaAsync(Resposta resposta)
     {
         await _context.Respostas.AddAsync(resposta);
+        return await _context.SaveChangesAsync();
+    }
+
+    public async Task<int> AdicionarQuestionarioAsync(Questionario questionario)
+    {
+        await _context.Questionarios.AddAsync(questionario);
         return await _context.SaveChangesAsync();
     }
 }
