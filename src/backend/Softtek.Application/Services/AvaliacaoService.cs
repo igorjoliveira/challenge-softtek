@@ -30,15 +30,25 @@ namespace Softtek.Application.Services
         }
         public async Task<Ulid> EnviarRespostaAsync(DateOnly dataPreenchimento, NovoQuestionarioDto dto)
         {
-            var questionario = await _repository.ObterQuestionarioPorDataAsync(dataPreenchimento)
-                ?? new Questionario(dataPreenchimento, dto.BlocoDeRespostaId);
+            var result = 0;
+            var questionario = await _repository.ObterQuestionarioPorDataAsync(dataPreenchimento);
+
+            if (questionario is null)
+            {
+                questionario = new Questionario(dataPreenchimento, dto.BlocoDeRespostaId);
+                result = await _repository.AdicionarQuestionarioAsync(questionario);
+                if (result == 0)
+                {
+                    throw new Exception("Erro ao adicionar questionário.");
+                }
+            }   
 
             foreach (var respostaDto in dto.respostas)
             {
                 var resposta = questionario.AdicionarResposta(new NovaResposta(respostaDto.EscalaValorId, respostaDto.PerguntaId));
-                var codigo = await _repository.AdicionarRespostaAsync(resposta);
+                result = await _repository.AdicionarRespostaAsync(resposta);
 
-                if (codigo == 0)
+                if (result == 0)
                 {
                     throw new Exception("Erro ao adicionar resposta.");
                 }

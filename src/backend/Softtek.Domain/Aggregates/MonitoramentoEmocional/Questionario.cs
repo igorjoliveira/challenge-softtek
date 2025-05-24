@@ -26,7 +26,7 @@ namespace Softtek.Domain.Aggregates.MonitoramentoEmocional
 
         public Resposta AdicionarResposta(NovaResposta record)
         {
-            var resposta = new Resposta(record.perguntaCodigo, record.escalaValorCodigo);
+            var resposta = new Resposta(Codigo, record.perguntaCodigo, record.escalaValorCodigo);
 
             if (_respostas.Any(r => r.GetHashCode() == resposta.GetHashCode()))
                 throw new InvalidOperationException($"A pergunta já possui uma resposta registrada.");

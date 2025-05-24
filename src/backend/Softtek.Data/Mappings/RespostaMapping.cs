@@ -11,11 +11,19 @@ public class RespostaMapping : IEntityTypeConfiguration<Resposta>
 
         builder.HasKey(r => r.Codigo);
 
+        builder.HasIndex(r => new { r.QuestionarioCodigo, r.PerguntaCodigo, r.EscalaValorCodigo})
+               .IsUnique()
+               .HasDatabaseName("IX_Respostas_Questionario_Pergunta_EscalaValor")
+               .HasFilter(null);
+
         builder.Property(r => r.Codigo)
                .HasConversion(
                    ulid => ulid.ToString(),
                    ulidString => Ulid.Parse(ulidString))
                .HasMaxLength(26);
+
+        builder.Property(r => r.QuestionarioCodigo)
+               .IsRequired();
 
         builder.Property(r => r.EscalaValorCodigo)
                .IsRequired();
@@ -31,6 +39,11 @@ public class RespostaMapping : IEntityTypeConfiguration<Resposta>
         builder.HasOne(r => r.Pergunta)
                .WithMany()
                .HasForeignKey(r => r.PerguntaCodigo)
+               .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(r => r.Questionario)
+               .WithMany()
+               .HasForeignKey(r => r.QuestionarioCodigo)
                .OnDelete(DeleteBehavior.Restrict);
     }
 }

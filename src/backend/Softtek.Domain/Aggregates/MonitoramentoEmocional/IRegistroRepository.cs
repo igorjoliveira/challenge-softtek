@@ -7,4 +7,5 @@ public interface IRegistroRepository
     Task<Questionario?> ObterQuestionarioPorIdAsync(Ulid codigo);
     Task<Questionario?> ObterQuestionarioPorDataAsync(DateOnly dataPreenchimento);
     Task<int> AdicionarRespostaAsync(Resposta resposta);
+    Task<int> AdicionarQuestionarioAsync(Questionario questionario);
 }
