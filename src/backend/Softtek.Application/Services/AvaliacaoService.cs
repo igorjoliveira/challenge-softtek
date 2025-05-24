@@ -2,6 +2,7 @@
 using NUlid;
 using Softtek.Application.DTOs;
 using Softtek.Application.Interfaces.Services;
+using Softtek.Domain.Aggregates.MonitoramentoEmocional;
 using Softtek.Domain.Aggregates.MonitoramentoEmocional.Commands;
 using Softtek.Domain.Exceptions;
 
@@ -16,7 +17,7 @@ namespace Softtek.Application.Services
         {
             _repository = repository;
             _mapper = mapper;
-        }
+        }        
         public async Task<List<QuestionarioDto>> ListarQuestionariosAsync()
         {
             var questionarios = await _repository.ObterTodosQuestionariosAsync();
@@ -27,22 +28,23 @@ namespace Softtek.Application.Services
             var questionario = await _repository.ObterQuestionarioPorIdAsync(id);
             return questionario is null ? null : _mapper.Map<DetalheQuestionarioDto>(questionario);
         }
-        public async Task<Ulid> EnviarRespostaAsync(Ulid codigoQuestionario, NovaRespostaDto dto)
+        public async Task<Ulid> EnviarRespostaAsync(DateOnly dataPreenchimento, NovoQuestionarioDto dto)
         {
-            var questionario = await _repository.ObterQuestionarioPorIdAsync(codigoQuestionario);
-            if (questionario is null)
+            var questionario = await _repository.ObterQuestionarioPorDataAsync(dataPreenchimento)
+                ?? new Questionario(dataPreenchimento, dto.BlocoDeRespostaId);
+
+            foreach (var respostaDto in dto.respostas)
             {
-                throw new NotFoundException("Questionário não encontrado.");
+                var resposta = questionario.AdicionarResposta(new NovaResposta(respostaDto.EscalaValorId, respostaDto.PerguntaId));
+                var codigo = await _repository.AdicionarRespostaAsync(resposta);
+
+                if (codigo == 0)
+                {
+                    throw new Exception("Erro ao adicionar resposta.");
+                }
             }
 
-            var resposta = questionario.AdicionarResposta(new NovaResposta(dto.EscalaValorId, dto.PerguntaId));
-            var codigo = await _repository.AdicionarRespostaAsync(resposta);
-            if (codigo == 0)
-            {
-                throw new Exception("Erro ao adicionar resposta.");
-            }
-
-            return resposta.Codigo;
+            return questionario.Codigo;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Softtek.Domain.Aggregates.MonitoramentoEmocional
 
         public Resposta(Ulid escalaValorCodigo, Ulid perguntaCodigo)
         {
-            Ulid.NewUlid();
+            Codigo = Ulid.NewUlid();
             EscalaValorCodigo = escalaValorCodigo;
             PerguntaCodigo = perguntaCodigo;
         }

@@ -11,14 +11,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.fiap.softtekapp.data.model.AssistenciaResumoDto
+import com.fiap.softtekapp.data.model.AvaliacaoResumoDto
 import com.fiap.softtekapp.data.network.RetrofitInstance
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AssistenciaListScreen(navController: NavController) {
-    var assistencias by remember { mutableStateOf<List<AssistenciaResumoDto>>(emptyList()) }
+fun AvaliacaoListScreen(navController: NavController) {
+    var avaliacoes by remember { mutableStateOf<List<AvaliacaoResumoDto>>(emptyList()) }
     var loading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
@@ -26,9 +26,9 @@ fun AssistenciaListScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         scope.launch {
             try {
-                assistencias = RetrofitInstance.api.listarAssistencias()
+                avaliacoes = RetrofitInstance.api.listarAvaliacoes()
             } catch (e: Exception) {
-                error = e.localizedMessage ?: "Erro ao carregar assistências"
+                error = e.localizedMessage
             } finally {
                 loading = false
             }
@@ -38,7 +38,7 @@ fun AssistenciaListScreen(navController: NavController) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Selecione uma Assistência") },
+                title = { Text("Avaliações") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
@@ -51,8 +51,7 @@ fun AssistenciaListScreen(navController: NavController) {
             modifier = Modifier
                 .padding(padding)
                 .padding(16.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Top
+                .fillMaxSize()
         ) {
             if (loading) {
                 CircularProgressIndicator()
@@ -60,17 +59,17 @@ fun AssistenciaListScreen(navController: NavController) {
                 Text("Erro: $error", color = MaterialTheme.colorScheme.error)
             } else {
                 LazyColumn {
-                    items(assistencias) { assistencia ->
+                    items(avaliacoes) { avaliacao ->
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp)
                                 .clickable {
-                                    navController.navigate("main/${assistencia.codigo}")
+                                    navController.navigate("blocos/${avaliacao.codigo}")
                                 }
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                Text("Código: ${assistencia.codigo}")
+                                Text("Código: ${avaliacao.codigo}")
                             }
                         }
                     }
