@@ -1,0 +1,32 @@
+### Softtek.Webapi.http
+@Softtek.Webapi_HostAddress = http://localhost:5254
+
+# Iniciar Avaliação
+POST {{Softtek.Webapi_HostAddress}}/api/avaliacao/iniciar
+Content-Type: application/json
+
+{
+  "dataCriacao": "2025-05-19"
+}
+
+### Obter Blocos Pendentes
+GET {{Softtek.Webapi_HostAddress}}/api/avaliacao/{{avaliacaoCodigo}}/blocos-pendentes
+
+### Adicionar Resposta
+POST {{Softtek.Webapi_HostAddress}}/api/avaliacao/adicionar-resposta
+Content-Type: application/json
+
+{
+  "questionarioCodigo": "01JVKE1RX5KAMJ0Q2TAEBY4X8V",
+  "perguntaCodigo": "01JVKE1RX7GXZTM1Z0VG31PF1A",
+  "escalaValorCodigo": "01JVKE1RX7V4YTP9H967PA08ZD"
+}
+
+### Obter Avaliação por Código
+GET {{Softtek.Webapi_HostAddress}}/api/avaliacao/{{avaliacaoCodigo}}
+
+### Obter Todas as Avaliações
+GET h{{Softtek.Webapi_HostAddress}}/api/avaliacao/todas
+
+### Remover Avaliação
+DELETE {{Softtek.Webapi_HostAddress}}/api/avaliacao/{{avaliacaoCodigo}}
